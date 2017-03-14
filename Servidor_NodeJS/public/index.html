@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+  <head>
+    <title>Digitales III - UTN FRBB</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <style media="screen">
+      @keyframes rotate360 {
+        to { transform: rotate(360deg); }
+      }
+      /*#fan { animation: 1s rotate360 infinite linear; }*/
+    </style>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      var chart;
+      var dataChart;
+      var options;
+      var dataFromServerChart;
+      var longitud;
+      function drawChart() {
+        console.log(dataFromServerChart.array);
+        dataChart = google.visualization.arrayToDataTable(dataFromServerChart.array);
+        options = {
+          title: "Temperatura",
+          colors: ['#e0440e'],
+          hAxis: {
+            title: 'Tiempo [s]'
+          },
+          vAxis: {
+            title: 'Temperatura [ºC]'
+          },
+          curveType: 'function',
+          legend: {position: 'none'}
+        };
+
+        chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(dataChart, options);
+      }
+
+      function resizeChart () {
+          chart.draw(dataChart, options);
+      }
+      if (document.addEventListener) {
+          window.addEventListener('resize', resizeChart);
+      }
+      else if (document.attachEvent) {
+          window.attachEvent('onresize', resizeChart);
+      }
+      else {
+          window.resize = resizeChart;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1>Digitales III - UTN FRBB - 2017</h1>
+    </div>
+    <br>
+    <div class="container" ng-controller="myCtrl">
+      <div class="row text-center" >
+        <h1>Temperatura actual: <span id="temp">35</span>&deg;</h1>
+      </div>
+      <div class="row text-center" >
+        <div class="col-sm-4 col-sm-offset-4">
+          <img id="fan" width="100px" src="fan.png" />
+        </div>
+        <div class="col-sm-4">
+          <h4>Tmin: <span id="tempMin">30</span>&deg; <br><br>
+          Tmax: <span id="tempMax">40</span>&deg;</h4>
+        </div>
+      </div>
+      <div class="row">
+        <h3>Opciones:</h3>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 col-sm-offset-3 text-center">
+          <button id="ejec" class="btn btn-primary" ng-click="turnOn()">ON</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button id="ejec2" class="btn btn-danger" ng-click="turnOff()">OFF</button>
+        </div>
+        <div class="col-sm-2">
+          <input type="number" class="form-control" ng-model="data.temp" placeholder="Temperatura">
+        </div>
+        <div class="col-sm-3 text-center">
+          <button id="tMin" class="btn btn-success" ng-disabled="!data.temp" ng-click="setMin()">Set tMin</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button id="tMax" class="btn btn-warning" ng-disabled="!data.temp" ng-click="setMax()">Set tMax</button>
+        </div>
+        <br><br>
+      </div>
+      <br>
+      <div class="row">
+        <div id="curve_chart" style="width: 100%; height: 100%"></div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+
+</html>
