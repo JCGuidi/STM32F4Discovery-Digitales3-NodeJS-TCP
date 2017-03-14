@@ -6,7 +6,7 @@ var PORT = 3000;
 var tMin = 20;
 var tMax = 40;
 var isOn = 0;
-var tempArray = [20, 20.1];
+var tempArray = [20];
 var forcedOn = 0;
 // var Temperatura = mongoose.model('Temperatura', {
 //     time_sec: { type: Number },

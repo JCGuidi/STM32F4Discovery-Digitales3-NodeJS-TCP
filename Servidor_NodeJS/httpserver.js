@@ -1,8 +1,6 @@
 var net = require('net');
 var express = require('express');
 var bodyParser = require('body-parser');
-var fs = require('fs');
-var readline = require("readline");
 var app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
